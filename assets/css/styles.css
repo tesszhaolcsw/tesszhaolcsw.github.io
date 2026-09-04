@@ -124,6 +124,11 @@ body{background:linear-gradient(180deg,#fbfaf7 0%,#faf7f2 100%)}
 }
 .menu-backdrop.open{opacity:1;visibility:visible;pointer-events:auto}
 body.menu-open{overflow:hidden}
+.nav[aria-hidden="true"]{pointer-events:none!important}
+.nav.open{z-index:10001!important;isolation:isolate}
+.nav.open a{position:relative;z-index:2;pointer-events:auto!important;touch-action:manipulation}
+.menu-backdrop{z-index:10000}
+.site-header{z-index:10002}
 
 @media(max-width:640px){
   .nav{width:100vw!important;padding:96px 22px 32px!important;border-left:0}
