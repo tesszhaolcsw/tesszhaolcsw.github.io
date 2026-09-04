@@ -1,0 +1,15 @@
+All website images are bundled locally under assets/images/.
+
+assets/images/tess.jpg
+  Tess Zhao portrait supplied by the site owner/authorized collaborator.
+
+assets/images/hero.jpg
+  User-supplied downloaded stock photograph used as the homepage hero and psychotherapy card image.
+
+assets/images/soft.jpg
+  User-supplied downloaded stock photograph used in interior/therapy imagery and psychotherapy card image.
+
+assets/images/wide.jpg
+  User-supplied downloaded stock photograph used as the wide landscape image and psychotherapy card image.
+
+No page depends on Squarespace or Pexels for image delivery.
