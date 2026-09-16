@@ -1,0 +1,12 @@
+---
+import { getCollection } from 'astro:content';
+import BlogLayout from '../../../layouts/BlogLayout.astro';
+const posts = (await getCollection('blogZh', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+<BlogLayout lang="zh-CN" title="心理健康文章 | Tess Zhao, LCSW" description="Tess Zhao, LCSW 分享的心理健康知识、思考与实用资源。">
+  <section class="blog-hero"><div class="blog-shell"><div class="kicker">心理健康资源</div><h1>在心理咨询之外，也为你留一份支持。</h1><p class="lead">这里会分享有关情绪健康、人际关系、创伤知情关怀、身份认同与跨文化生活的文章。</p></div></section>
+  <div class="blog-shell blog-grid">
+    {posts.length ? posts.map(post => <article class="post-card"><p class="post-meta">{post.data.date.toLocaleDateString('zh-CN',{year:'numeric',month:'long',day:'numeric'})}{post.data.category && <> · {post.data.category}</>}</p><h2><a href={`/zh/blog/${post.id.replace(/\.(md|mdx)$/,'')}/`}>{post.data.title}</a></h2><p>{post.data.summary}</p></article>) : <div class="empty-state"><h2>文章正在准备中</h2><p>Tess 会陆续在这里分享心理健康相关内容，欢迎之后再来看看。</p></div>}
+  </div>
+</BlogLayout>
