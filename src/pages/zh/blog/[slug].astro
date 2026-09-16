@@ -1,0 +1,14 @@
+---
+import { getCollection, render } from 'astro:content';
+import BlogLayout from '../../../layouts/BlogLayout.astro';
+export async function getStaticPaths() {
+  const posts = await getCollection('blogZh', ({ data }) => !data.draft);
+  return posts.map(post => ({ params: { slug: post.id.replace(/\.(md|mdx)$/,'') }, props: { post } }));
+}
+const { post } = Astro.props;
+const { Content } = await render(post);
+const description = post.data.seoDescription || post.data.summary;
+---
+<BlogLayout lang="zh-CN" title={post.data.seoTitle || `${post.data.title} | Tess Zhao, LCSW`} description={description} image={post.data.featuredImage} article>
+  <article class="article"><header><p class="post-meta">{post.data.date.toLocaleDateString('zh-CN',{year:'numeric',month:'long',day:'numeric'})}{post.data.category && <> · {post.data.category}</>}</p><h1>{post.data.title}</h1><p class="lead">{post.data.summary}</p>{post.data.featuredImage && <img src={post.data.featuredImage} alt={post.data.imageAlt || ''} />}</header><Content /><p><a href="/zh/blog/">← 返回文章列表</a></p></article>
+</BlogLayout>
