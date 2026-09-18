@@ -1,0 +1,66 @@
+media:
+  input: public/assets/images/blog
+  output: /assets/images/blog
+
+content:
+  - name: blog_en
+    label: English articles
+    type: collection
+    path: content/blog/en
+    format: yaml-frontmatter
+    filename:
+      template: "{year}-{month}-{day}-{title}.md"
+      field: create
+    subfolders: false
+    view:
+      primary: title
+      fields: [date, draft, category]
+      sort: date
+      order: desc
+      search: [title, summary, category]
+    fields:
+      - { name: title, label: Title, type: string, required: true }
+      - { name: summary, label: Summary, type: text, required: true, description: "One or two client-friendly sentences." }
+      - { name: date, label: Publication date, type: date, required: true }
+      - { name: updated, label: Updated date, type: date }
+      - { name: draft, label: Keep as draft, type: boolean, default: true, description: "Drafts are excluded from the public website, feeds, and sitemap." }
+      - { name: featured, label: Featured article, type: boolean, default: false }
+      - { name: featuredImage, label: Featured image, type: image, description: "Optional. Upload only public-facing images." }
+      - { name: imageAlt, label: Image description, type: string, description: "Required when an image is used. Describe what matters in the image." }
+      - { name: author, label: Author, type: string, default: "Tess Zhao, LCSW", required: true }
+      - { name: category, label: Category, type: string }
+      - { name: seoTitle, label: SEO title, type: string, description: "Optional; keep concise and accurate." }
+      - { name: seoDescription, label: SEO description, type: text, description: "Optional; summarize the page accurately." }
+      - { name: translationKey, label: Translation key, type: string, description: "Optional shared key for English and Chinese counterparts." }
+      - { name: body, label: Article, type: rich-text, required: true }
+
+  - name: blog_zh
+    label: 中文文章
+    type: collection
+    path: content/blog/zh
+    format: yaml-frontmatter
+    filename:
+      template: "{year}-{month}-{day}-{title}.md"
+      field: create
+    subfolders: false
+    view:
+      primary: title
+      fields: [date, draft, category]
+      sort: date
+      order: desc
+      search: [title, summary, category]
+    fields:
+      - { name: title, label: 标题, type: string, required: true }
+      - { name: summary, label: 内容简介, type: text, required: true, description: "用一两句话自然地概括文章。" }
+      - { name: date, label: 发布日期, type: date, required: true }
+      - { name: updated, label: 更新日期, type: date }
+      - { name: draft, label: 保存为草稿, type: boolean, default: true, description: "草稿不会显示在公开网站、订阅源或网站地图中。" }
+      - { name: featured, label: 推荐文章, type: boolean, default: false }
+      - { name: featuredImage, label: 封面图片, type: image, description: "选填。请仅上传可以公开使用的图片。" }
+      - { name: imageAlt, label: 图片说明, type: string, description: "使用图片时必填。简洁说明图片中的重要内容。" }
+      - { name: author, label: 作者, type: string, default: "Tess Zhao, LCSW", required: true }
+      - { name: category, label: 分类, type: string }
+      - { name: seoTitle, label: SEO 标题, type: string }
+      - { name: seoDescription, label: SEO 描述, type: text }
+      - { name: translationKey, label: 中英文对应标识, type: string, description: "选填。中英文对应文章可填写相同标识。" }
+      - { name: body, label: 正文, type: rich-text, required: true }

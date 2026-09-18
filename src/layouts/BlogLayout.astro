@@ -1,0 +1,56 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  lang?: 'en' | 'zh-CN';
+  image?: string;
+  article?: boolean;
+}
+const { title, description, lang = 'en', image = '/assets/images/tess.jpg', article = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const isZh = lang === 'zh-CN';
+---
+<!doctype html>
+<html lang={lang}>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f7f3ec">
+  <title>{title}</title>
+  <meta name="description" content={description}>
+  <link rel="canonical" href={canonical}>
+  <meta property="og:type" content={article ? 'article' : 'website'}>
+  <meta property="og:title" content={title}>
+  <meta property="og:description" content={description}>
+  <meta property="og:url" content={canonical}>
+  <meta property="og:image" content={new URL(image, Astro.site)}>
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link rel="alternate" type="application/rss+xml" title="Tess Zhao, LCSW — Resources" href={isZh ? '/zh/rss.xml' : '/rss.xml'}>
+  <style>
+    .skip-link{position:absolute;left:-9999px;top:0}.skip-link:focus{left:1rem;top:1rem;z-index:9999;background:#fff;padding:.75rem 1rem}
+    .blog-hero{padding:7rem 1.25rem 3rem;background:#f7f3ec}.blog-shell{width:min(920px,calc(100% - 2rem));margin:auto}
+    .blog-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.25rem;padding:2.5rem 0 5rem}
+    .post-card{background:#fff;border:1px solid rgba(35,55,49,.15);border-radius:18px;padding:1.5rem;box-shadow:0 8px 30px rgba(35,55,49,.06)}
+    .post-card a{color:inherit}.post-meta{font-size:.9rem;color:#5e6d67}.empty-state{grid-column:1/-1;padding:2rem;border:1px dashed #9ba9a3;border-radius:18px}
+    .article{width:min(760px,calc(100% - 2rem));margin:auto;padding:7rem 0 5rem}.article header{margin-bottom:2.5rem}.article img{max-width:100%;height:auto;border-radius:18px}
+    .article :global(p),.article :global(li){font-size:1.08rem;line-height:1.75}.article :global(h2){margin-top:2.25rem}.article :global(a){text-decoration:underline}
+    @media(max-width:700px){.blog-grid{grid-template-columns:1fr}.blog-hero,.article{padding-top:5.5rem}}
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#main">{isZh ? '跳至正文' : 'Skip to content'}</a>
+<header class="site-header">
+  <div class="shell header-inner">
+    <a class="brand" href={isZh ? '/psychotherapy-cn.html' : '/index.html'} aria-label={isZh ? 'Tess Zhao LCSW 中文主页' : 'Tess Zhao LCSW home'}><span>TESS ZHAO</span><small>LCSW</small></a>
+    <button class="menu-btn" aria-label={isZh ? '打开导航菜单' : 'Toggle navigation'} aria-expanded="false" aria-controls="site-nav"><span></span><span></span><span></span></button>
+    <nav class="nav" id="site-nav" aria-label={isZh ? '主导航' : 'Primary navigation'}>
+      {isZh ? <><a href="/psychotherapy-cn.html">心理咨询</a><a href="/insurance-cn.html">保险与费用</a><a href="/zh/blog/">文章</a><a href="/blog/">English</a></> : <><a href="/about.html">About</a><a href="/psychotherapy.html">Psychotherapy</a><a href="/insurance-and-fees.html">Insurance & Fees</a><a href="/blog/">Resources</a><a href="/zh/blog/">中文</a></>}
+      <a class="btn nav-cta" href="https://tidycal.com/tesszhaolcsw/initialconsult">{isZh ? '预约咨询' : 'Book Consultation'}</a>
+    </nav>
+  </div>
+</header>
+<main id="main"><slot /></main>
+<footer class="site-footer"><div class="shell"><div class="footer-grid"><div><div class="footer-title">TESS ZHAO LCSW</div><p>Inner Healing Resolutions, LLC</p></div><div><strong>{isZh ? '联系方式' : 'Contact'}</strong><p><a href="tel:+17038295007">703-829-5007</a><br><a href="mailto:tesszhaolcsw@gmail.com">tesszhaolcsw@gmail.com</a><br>微信: tesszhaolcsw</p></div><div><strong>{isZh ? '危机支持' : 'Crisis support'}</strong><p>{isZh ? '如有生命危险，请拨打 988。紧急情况请拨打 911 或前往最近的急诊室。' : 'If you are in a life-threatening situation, call 988. For an emergency, call 911 or go to the nearest emergency room.'}</p></div></div><div class="footer-small"><span>© Inner Healing Resolutions, LLC</span><span><a href="/privacy-policy.html">Privacy Policy</a> · <a href="/hippa.html">HIPAA Notice</a></span></div></div></footer>
+<script is:inline src="/assets/js/site.js"></script>
+</body>
+</html>

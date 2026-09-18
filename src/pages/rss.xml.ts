@@ -1,0 +1,8 @@
+import { getCollection } from 'astro:content';
+export async function GET() {
+  const site = 'https://www.tesszhaolcsw.com';
+  const posts = (await getCollection('blogEn', ({data}) => !data.draft)).sort((a,b)=>b.data.date.valueOf()-a.data.date.valueOf());
+  const esc=(s:string)=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]!));
+  const items=posts.map(p=>`<item><title>${esc(p.data.title)}</title><link>${site}/blog/${p.id.replace(/\.(md|mdx)$/,'')}/</link><guid>${site}/blog/${p.id.replace(/\.(md|mdx)$/,'')}/</guid><pubDate>${p.data.date.toUTCString()}</pubDate><description>${esc(p.data.summary)}</description></item>`).join('');
+  return new Response(`<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Tess Zhao, LCSW — Resources</title><link>${site}/blog/</link><description>Mental health resources from Tess Zhao, LCSW.</description>${items}</channel></rss>`,{headers:{'Content-Type':'application/rss+xml; charset=utf-8'}});
+}

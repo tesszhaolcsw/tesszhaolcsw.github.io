@@ -1,0 +1,12 @@
+---
+import { getCollection } from 'astro:content';
+import BlogLayout from '../../layouts/BlogLayout.astro';
+const posts = (await getCollection('blogEn', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+<BlogLayout title="Mental Health Resources | Tess Zhao, LCSW" description="Mental health reflections and practical resources from Tess Zhao, LCSW.">
+  <section class="blog-hero"><div class="blog-shell"><div class="kicker">Resources</div><h1>Thoughtful support for life between sessions.</h1><p class="lead">Articles on emotional wellbeing, relationships, trauma-informed care, identity, and cross-cultural life.</p></div></section>
+  <div class="blog-shell blog-grid">
+    {posts.length ? posts.map(post => <article class="post-card"><p class="post-meta">{post.data.date.toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'})}{post.data.category && <> · {post.data.category}</>}</p><h2><a href={`/blog/${post.id.replace(/\.(md|mdx)$/,'')}/`}>{post.data.title}</a></h2><p>{post.data.summary}</p></article>) : <div class="empty-state"><h2>Resources are coming soon.</h2><p>Tess is preparing thoughtful articles for this space. Please check back later.</p></div>}
+  </div>
+</BlogLayout>
