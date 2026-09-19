@@ -1,0 +1,27 @@
+---
+import BlogLayout from '../../layouts/BlogLayout.astro';
+---
+<BlogLayout
+  title="Self-Guided Tools | Tess Zhao, LCSW"
+  description="Explore self-guided mental health tools and reflective exercises."
+>
+  <section class="tools-page" aria-labelledby="tools-title">
+    <div class="tools-heading">
+      <div class="kicker">Resources</div>
+      <h1 id="tools-title">Self-Guided Tools</h1>
+    </div>
+    <div class="tools-embed">
+      <script is:inline src="https://embed.shareables.ai/embed.js" async></script>
+      <div data-shareables-embed="client-tools" class="shareables-app-client-tools"></div>
+      <noscript><p>Please enable JavaScript to use these self-guided tools.</p></noscript>
+    </div>
+  </section>
+  <style>
+    .tools-page{min-height:calc(100vh - 5rem);padding:7rem 0 2rem;background:#f7f3ec}
+    .tools-heading{width:min(1180px,calc(100% - 2rem));margin:0 auto 1.5rem}
+    .tools-heading h1{margin:.35rem 0 0}
+    .tools-embed{width:100%;min-height:70vh;background:#fff}
+    .shareables-app-client-tools{width:100%;min-height:70vh}
+    @media(max-width:700px){.tools-page{padding-top:5.5rem}.tools-heading{margin-bottom:1rem}}
+  </style>
+</BlogLayout>
