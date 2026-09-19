@@ -1,0 +1,28 @@
+---
+import BlogLayout from '../../../layouts/BlogLayout.astro';
+---
+<BlogLayout
+  lang="zh-CN"
+  title="心理工具箱 | Tess Zhao, LCSW"
+  description="探索可自主使用的心理健康工具与自我反思练习。"
+>
+  <section class="tools-page" aria-labelledby="tools-title">
+    <div class="tools-heading">
+      <div class="kicker">心理健康资源</div>
+      <h1 id="tools-title">心理工具箱</h1>
+    </div>
+    <div class="tools-embed">
+      <script is:inline src="https://embed.shareables.ai/embed.js" async></script>
+      <div data-shareables-embed="client-tools-zh" class="shareables-app-client-tools-zh"></div>
+      <noscript><p>请启用 JavaScript 以使用这些心理工具。</p></noscript>
+    </div>
+  </section>
+  <style>
+    .tools-page{min-height:calc(100vh - 5rem);padding:7rem 0 2rem;background:#f7f3ec}
+    .tools-heading{width:min(1180px,calc(100% - 2rem));margin:0 auto 1.5rem}
+    .tools-heading h1{margin:.35rem 0 0}
+    .tools-embed{width:100%;min-height:70vh;background:#fff}
+    .shareables-app-client-tools-zh{width:100%;min-height:70vh}
+    @media(max-width:700px){.tools-page{padding-top:5.5rem}.tools-heading{margin-bottom:1rem}}
+  </style>
+</BlogLayout>
