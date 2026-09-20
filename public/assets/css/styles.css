@@ -206,3 +206,33 @@ body.menu-open{overflow:hidden}
 .zh .brand small,.zh .portrait-caption span,.zh .image-break-quote span,.zh .kicker,.zh .btn,.zh .nav{font-family:var(--font-cn-body)}
 html[lang="zh-CN"] body,html[lang="zh"] body{font-family:var(--font-cn-body)}
 html[lang="zh-CN"] h1,html[lang="zh-CN"] h2,html[lang="zh-CN"] h3,html[lang="zh"] h1,html[lang="zh"] h2,html[lang="zh"] h3{font-family:var(--font-cn-display);font-weight:400;letter-spacing:.01em}
+
+
+/* Cinematic motion layer */
+.scroll-progress{position:fixed;top:0;left:0;z-index:10020;width:100%;height:3px;pointer-events:none;transform:scaleX(0);transform-origin:left;background:linear-gradient(90deg,var(--accent),#91a596,#c3ad86);box-shadow:0 1px 8px rgba(63,89,72,.24);will-change:transform}
+.site-header{transition:background .35s ease,box-shadow .35s ease,transform .35s ease}
+.site-header.is-scrolled{background:rgba(251,250,247,.985);box-shadow:0 12px 35px rgba(30,39,32,.08)}
+.home-hero-copy>*{opacity:0;transform:translateY(24px);animation:hero-copy-in .8s cubic-bezier(.22,.8,.22,1) forwards}
+.home-hero-copy>*:nth-child(2){animation-delay:.08s}.home-hero-copy>*:nth-child(3){animation-delay:.16s}.home-hero-copy>*:nth-child(4){animation-delay:.24s}.home-hero-copy>*:nth-child(5){animation-delay:.32s}
+.page-hero .shell>*{opacity:0;transform:translateY(18px);animation:hero-copy-in .7s cubic-bezier(.22,.8,.22,1) forwards}
+.page-hero .shell>*:nth-child(2){animation-delay:.08s}.page-hero .shell>*:nth-child(3){animation-delay:.16s}.page-hero .shell>*:nth-child(4){animation-delay:.24s}
+.hero-portrait-card{animation:portrait-breathe 8s ease-in-out infinite}
+.hero-float-language{animation:float-soft 6.5s ease-in-out infinite}.hero-float-style{animation:float-soft 7.5s ease-in-out -2s infinite}.hero-nameplate{animation:float-soft 8.5s ease-in-out -4s infinite}
+.service-card,.concern-grid article,.logistics-grid article,.credential-list>div,.post-card,.faq details{transition:transform .38s cubic-bezier(.22,.8,.22,1),box-shadow .38s ease,border-color .38s ease}
+.service-card:hover,.concern-grid article:hover,.logistics-grid article:hover,.credential-list>div:hover,.post-card:hover{transform:translateY(-7px);box-shadow:0 22px 55px rgba(30,39,32,.12);border-color:rgba(63,89,72,.28)}
+.photo-soft,.portrait,.image-break{transition:transform .8s cubic-bezier(.22,.8,.22,1),filter .8s ease}.photo-soft:hover,.portrait:hover{transform:scale(1.025);filter:saturate(1.04)}
+.btn{position:relative;overflow:hidden}.btn:after{content:"";position:absolute;inset:-40% auto -40% -55%;width:36%;transform:skewX(-20deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);transition:left .65s ease}.btn:hover:after{left:125%}
+.kicker:before{content:"";display:inline-block;width:22px;height:1px;margin:0 9px 3px 0;background:currentColor;transform-origin:left;animation:kicker-line 1s cubic-bezier(.22,.8,.22,1) both}
+.tools-embed{opacity:0;transform:translateY(18px);animation:hero-copy-in .75s .18s cubic-bezier(.22,.8,.22,1) forwards}
+@keyframes hero-copy-in{to{opacity:1;transform:none}}
+@keyframes portrait-breathe{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-7px) scale(1.008)}}
+@keyframes float-soft{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+@keyframes kicker-line{from{transform:scaleX(0);opacity:0}to{transform:scaleX(1);opacity:1}}
+@media(hover:none){.service-card:hover,.concern-grid article:hover,.logistics-grid article:hover,.credential-list>div:hover,.post-card:hover,.photo-soft:hover,.portrait:hover{transform:none}}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .home-hero-copy>*,.page-hero .shell>*,.tools-embed{opacity:1;transform:none;animation:none!important}
+  .hero-portrait-card,.hero-float-language,.hero-float-style,.hero-nameplate,.kicker:before{animation:none!important}
+  .service-card,.concern-grid article,.logistics-grid article,.credential-list>div,.post-card,.faq details,.photo-soft,.portrait,.image-break,.site-header,.btn:after{transition:none!important}
+  .scroll-progress{display:none}
+}
