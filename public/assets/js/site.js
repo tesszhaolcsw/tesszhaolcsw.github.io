@@ -80,6 +80,30 @@
 
   const initPage = () => {
     initNavigation();
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const header = document.querySelector('.site-header');
+    if (!reduceMotion) {
+      const progress = document.createElement('div');
+      progress.className = 'scroll-progress';
+      progress.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(progress);
+      let ticking = false;
+      const updateScrollEffects = () => {
+        const max = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+        progress.style.transform = `scaleX(${Math.min(window.scrollY / max, 1)})`;
+        header?.classList.toggle('is-scrolled', window.scrollY > 18);
+        ticking = false;
+      };
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          window.requestAnimationFrame(updateScrollEffects);
+          ticking = true;
+        }
+      }, { passive: true });
+      updateScrollEffects();
+    }
+
     const current = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
     document.querySelectorAll('.nav a[href]').forEach(link => {
       const href = link.getAttribute('href').split('#')[0].toLowerCase();
@@ -95,12 +119,12 @@
       document.body.appendChild(bar);
     }
 
-    const revealTargets = document.querySelectorAll('.section-heading, .concern-grid article, .profile-layout > *, .service-card, .approach-grid > *, .logistics-grid article, .final-cta-inner > *, .card, .credential-list > div, .faq details');
+    const revealTargets = document.querySelectorAll('.section-heading, .concern-grid article, .profile-layout > *, .service-card, .approach-grid > *, .logistics-grid article, .final-cta-inner > *, .card, .credential-list > div, .faq details, .post-card, .empty-state, .article > *, .legal.spaced > *, .tools-heading, .tools-embed');
     revealTargets.forEach((el, i) => {
       el.setAttribute('data-reveal', '');
       if (i % 4) el.setAttribute('data-reveal-delay', String(i % 4));
     });
-    if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if ('IntersectionObserver' in window && !reduceMotion) {
       const io = new IntersectionObserver(entries => entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('is-visible');
