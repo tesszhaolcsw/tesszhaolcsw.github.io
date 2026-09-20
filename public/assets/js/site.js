@@ -119,7 +119,7 @@
       document.body.appendChild(bar);
     }
 
-    const revealTargets = document.querySelectorAll('.section-heading, .concern-grid article, .profile-layout > *, .service-card, .approach-grid > *, .logistics-grid article, .final-cta-inner > *, .card, .credential-list > div, .faq details, .post-card, .empty-state, .article > *, .legal.spaced > *, .tools-heading, .tools-embed');
+    const revealTargets = document.querySelectorAll('.section-heading, .concern-grid article, .profile-layout > *, .service-card, .approach-grid > *, .logistics-grid article, .final-cta-inner > *, .card, .credential-list > div, .faq details, .post-card, .empty-state, .article > *, .legal.spaced > *, .tools-heading, .tools-embed, .visual-story-heading, .visual-card');
     revealTargets.forEach((el, i) => {
       el.setAttribute('data-reveal', '');
       if (i % 4) el.setAttribute('data-reveal-delay', String(i % 4));
@@ -133,6 +133,29 @@
       }), { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
       revealTargets.forEach(el => io.observe(el));
     } else revealTargets.forEach(el => el.classList.add('is-visible'));
+
+    const parallaxMedia = [...document.querySelectorAll('[data-parallax-media]')];
+    if (parallaxMedia.length && !reduceMotion) {
+      let mediaTicking = false;
+      const updateMediaMotion = () => {
+        const viewportCenter = window.innerHeight / 2;
+        parallaxMedia.forEach(card => {
+          const rect = card.getBoundingClientRect();
+          if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+          const cardCenter = rect.top + rect.height / 2;
+          const shift = Math.max(-14, Math.min(14, (viewportCenter - cardCenter) * 0.025));
+          card.style.setProperty('--media-shift', `${shift.toFixed(2)}px`);
+        });
+        mediaTicking = false;
+      };
+      window.addEventListener('scroll', () => {
+        if (!mediaTicking) {
+          window.requestAnimationFrame(updateMediaMotion);
+          mediaTicking = true;
+        }
+      }, { passive: true });
+      updateMediaMotion();
+    }
   };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initPage, { once: true });
