@@ -93,7 +93,11 @@
       : new URL('./', location.href);
 
     let counterpart;
-    if (pagePath.includes('/zh/resources/')) counterpart = new URL('resources/', siteRoot);
+    if (pagePath.includes('/zh/privacy-policy.html')) counterpart = new URL('privacy-policy.html', siteRoot);
+    else if (pagePath.endsWith('/privacy-policy.html')) counterpart = new URL('zh/privacy-policy.html', siteRoot);
+    else if (pagePath.includes('/zh/hippa.html')) counterpart = new URL('hippa.html', siteRoot);
+    else if (pagePath.endsWith('/hippa.html')) counterpart = new URL('zh/hippa.html', siteRoot);
+    else if (pagePath.includes('/zh/resources/')) counterpart = new URL('resources/', siteRoot);
     else if (/\/resources\/?$/.test(pagePath)) counterpart = new URL('zh/resources/', siteRoot);
     else if (/-cn\.html$/.test(pagePath)) counterpart = new URL('psychotherapy.html', siteRoot);
     else counterpart = new URL('psychotherapy-cn.html', siteRoot);
@@ -106,14 +110,73 @@
     switcher.setAttribute('aria-label', isChinese ? 'View this site in English' : '查看中文网站');
     switcher.title = isChinese ? 'English' : '中文';
     switcher.innerHTML = isChinese
-      ? '<span aria-hidden="true">EN</span><strong>English</strong>'
-      : '<span aria-hidden="true">文</span><strong>中文</strong>';
+      ? '<span aria-hidden="true">EN</span>'
+      : '<span aria-hidden="true">中</span>';
+
+    document.querySelectorAll('.nav a').forEach(link => {
+      const label = link.textContent.trim().toLowerCase();
+      if (label === '中文' || label === 'english') link.remove();
+    });
     document.body.appendChild(switcher);
+  };
+
+  const iconSvg = name => {
+    const icons = {
+      phone: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.2 3.5 9.4 8 7.9 9.5a14.6 14.6 0 0 0 6.6 6.6l1.5-1.5 4.5 2.2v2.5c0 .7-.5 1.2-1.2 1.2A16.8 16.8 0 0 1 3.5 4.7c0-.7.5-1.2 1.2-1.2h2.5Z"/></svg>',
+      email: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 6.5h17v11h-17z"/><path d="m4 7 8 6 8-6"/></svg>',
+      calendar: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5h16v15H4z"/><path d="M8 3v5M16 3v5M4 10h16"/></svg>',
+      wechat: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.4 14.3c-1.1.6-2.4.9-3.8.9-4 0-7.1-2.5-7.1-5.7s3.1-5.8 7.1-5.8 7.1 2.6 7.1 5.8c0 .4 0 .8-.1 1.1"/><path d="M12 15.1c0-2.6 2.5-4.7 5.5-4.7s5.5 2.1 5.5 4.7-2.5 4.7-5.5 4.7c-.9 0-1.8-.2-2.6-.5l-2.5 1 .7-2c-.7-.9-1.1-2-1.1-3.2Z"/><circle cx="7" cy="8.5" r=".6"/><circle cx="12" cy="8.5" r=".6"/></svg>'
+    };
+    return icons[name] || '';
+  };
+
+  const initContactIcons = () => {
+    document.querySelectorAll('a[href^="tel:"],a[href^="mailto:"]').forEach(link => {
+      if (link.querySelector('.contact-glyph')) return;
+      const type = link.href.startsWith('tel:') ? 'phone' : 'email';
+      link.classList.add('contact-link');
+      link.insertAdjacentHTML('afterbegin', `<span class="contact-glyph">${iconSvg(type)}</span>`);
+    });
+    document.querySelectorAll('.nav-cta').forEach(link => {
+      if (!link.querySelector('.contact-glyph')) {
+        link.insertAdjacentHTML('afterbegin', `<span class="contact-glyph contact-glyph-calendar">${iconSvg('calendar')}</span>`);
+      }
+    });
+    document.querySelectorAll('.site-footer p').forEach(paragraph => {
+      if (!/微信/.test(paragraph.textContent) || paragraph.querySelector('.wechat-line')) return;
+      paragraph.innerHTML = paragraph.innerHTML.replace(/(<br\s*\/?>(?:\s*))(微信(?:联系)?\s*[:：]\s*[^<]+)/i,
+        `$1<span class="wechat-line"><span class="contact-glyph">${iconSvg('wechat')}</span>$2</span>`);
+    });
+  };
+
+  const initPageImagery = () => {
+    if (document.querySelector('.page-atmosphere')) return;
+    const filename = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
+    const isZh = document.documentElement.lang?.toLowerCase().startsWith('zh');
+    const images = {
+      'about.html': ['https://images.pexels.com/photos/33703636/pexels-photo-33703636.jpeg?auto=compress&cs=tinysrgb&w=1800', 'A warm, quiet interior with wooden chairs and a green plant', '安静温暖的室内角落，摆有木椅和绿植'],
+      'psychotherapy.html': ['https://images.pexels.com/photos/93802/pexels-photo-93802.jpeg?auto=compress&cs=tinysrgb&w=1800', 'A misty mountain lake surrounded by green forest', '薄雾笼罩的山间湖泊与绿色森林'],
+      'psychotherapy-cn.html': ['https://images.pexels.com/photos/93802/pexels-photo-93802.jpeg?auto=compress&cs=tinysrgb&w=1800', 'A misty mountain lake surrounded by green forest', '薄雾笼罩的山间湖泊与绿色森林'],
+      'insurance-and-fees.html': ['https://images.pexels.com/photos/8502649/pexels-photo-8502649.jpeg?auto=compress&cs=tinysrgb&w=1800', 'Eucalyptus leaves casting soft shadows on a green wall', '桉树叶在浅绿色墙面投下柔和光影'],
+      'privacy-policy.html': ['https://images.pexels.com/photos/23499462/pexels-photo-23499462.jpeg?auto=compress&cs=tinysrgb&w=1800', 'Delicate leaf shadows on a sunlit neutral wall', '阳光下墙面上的柔和树叶光影'],
+      'hippa.html': ['https://images.pexels.com/photos/23499462/pexels-photo-23499462.jpeg?auto=compress&cs=tinysrgb&w=1800', 'Delicate leaf shadows on a sunlit neutral wall', '阳光下墙面上的柔和树叶光影']
+    };
+    const data = images[filename];
+    const hero = document.querySelector('.page-hero');
+    if (!data || !hero) return;
+    const figure = document.createElement('figure');
+    figure.className = 'page-atmosphere';
+    figure.setAttribute('data-reveal', '');
+    figure.innerHTML = `<img src="${data[0]}" alt="${isZh ? data[2] : data[1]}" loading="lazy" decoding="async"><span aria-hidden="true"></span>`;
+    hero.insertAdjacentElement('afterend', figure);
+    requestAnimationFrame(() => figure.classList.add('is-visible'));
   };
 
   const initPage = () => {
     initNavigation();
     initLanguageSwitcher();
+    initContactIcons();
+    initPageImagery();
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const header = document.querySelector('.site-header');
