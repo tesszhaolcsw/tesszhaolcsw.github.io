@@ -93,7 +93,11 @@
       : new URL('./', location.href);
 
     let counterpart;
-    if (pagePath.includes('/zh/resources/')) counterpart = new URL('resources/', siteRoot);
+    if (pagePath.includes('/zh/privacy-policy.html')) counterpart = new URL('privacy-policy.html', siteRoot);
+    else if (pagePath.endsWith('/privacy-policy.html')) counterpart = new URL('zh/privacy-policy.html', siteRoot);
+    else if (pagePath.includes('/zh/hippa.html')) counterpart = new URL('hippa.html', siteRoot);
+    else if (pagePath.endsWith('/hippa.html')) counterpart = new URL('zh/hippa.html', siteRoot);
+    else if (pagePath.includes('/zh/resources/')) counterpart = new URL('resources/', siteRoot);
     else if (/\/resources\/?$/.test(pagePath)) counterpart = new URL('zh/resources/', siteRoot);
     else if (/-cn\.html$/.test(pagePath)) counterpart = new URL('psychotherapy.html', siteRoot);
     else counterpart = new URL('psychotherapy-cn.html', siteRoot);
