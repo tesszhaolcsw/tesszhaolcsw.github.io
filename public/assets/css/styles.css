@@ -368,3 +368,63 @@ body.menu-open .language-float{opacity:0!important;visibility:hidden;pointer-eve
 @media(prefers-reduced-motion:reduce){
   .language-float{opacity:1;transform:none;animation:none;transition:none}
 }
+
+
+/* Compact language switcher, contextual imagery, and contact icons */
+.language-float{
+  width:40px;
+  min-width:40px;
+  height:40px;
+  min-height:40px;
+  padding:0;
+  gap:0;
+  justify-content:center;
+  border-radius:50%;
+}
+.language-float span{
+  width:30px;
+  height:30px;
+  font-size:9px;
+}
+.language-float strong{display:none}
+
+.contact-link{display:inline-flex;align-items:center;gap:7px;text-decoration-thickness:1px}
+.contact-glyph{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;flex:0 0 18px;color:currentColor}
+.contact-glyph svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.contact-glyph-calendar{width:15px;height:15px;flex-basis:15px;margin-right:7px}
+.wechat-line{display:inline-flex;align-items:center;gap:7px;margin-top:3px}
+.site-footer .contact-glyph{color:#c8d6cb}
+
+.page-atmosphere{
+  --atmosphere-shift:0px;
+  position:relative;
+  width:min(calc(100% - 48px),1180px);
+  height:clamp(260px,38vw,480px);
+  margin:-42px auto 36px;
+  overflow:hidden;
+  border-radius:32px;
+  box-shadow:0 26px 65px rgba(30,39,32,.13);
+  background:#dce4db;
+  isolation:isolate;
+}
+.page-atmosphere img{
+  width:100%;
+  height:calc(100% + 40px);
+  margin-top:-20px;
+  object-fit:cover;
+  filter:saturate(.82) contrast(.94);
+  transform:scale(1.045);
+  animation:atmosphereBreathe 13s ease-in-out infinite alternate;
+}
+.page-atmosphere:after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(31,48,38,.06),rgba(244,237,226,.10));pointer-events:none}
+.page-atmosphere>span{position:absolute;z-index:2;width:150px;height:150px;right:-42px;bottom:-62px;border:1px solid rgba(255,255,255,.48);border-radius:50%;animation:atmosphereRing 9s ease-in-out infinite alternate}
+@keyframes atmosphereBreathe{from{transform:scale(1.045) translate3d(-.4%,0,0)}to{transform:scale(1.09) translate3d(.4%,-.6%,0)}}
+@keyframes atmosphereRing{from{transform:scale(.92);opacity:.45}to{transform:scale(1.18);opacity:.9}}
+@media(max-width:640px){
+  .language-float{width:38px;min-width:38px;height:38px;min-height:38px;padding:0}
+  .language-float span{width:28px;height:28px}
+  .page-atmosphere{width:calc(100% - 16px);height:260px;margin:-26px auto 26px;border-radius:24px}
+}
+@media(prefers-reduced-motion:reduce){
+  .page-atmosphere img,.page-atmosphere>span{animation:none}
+}
