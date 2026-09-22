@@ -92,6 +92,29 @@
       ? new URL(stylesheet.href.replace(/assets\/css\/styles\.css(?:[?#].*)?$/i, ''))
       : new URL('./', location.href);
 
+    const nav = document.querySelector('.nav');
+    if (isChinese && nav) {
+      const cta = nav.querySelector('.nav-cta');
+      const items = [
+        ['psychotherapy-cn.html', '心理咨询'],
+        ['insurance-cn.html', '保险与费用'],
+        ['zh/resources/', '心理工具箱'],
+        ['zh/blog/', '心理文章']
+      ];
+      nav.replaceChildren();
+      items.forEach(([path, label]) => {
+        const link = document.createElement('a');
+        link.href = new URL(path, siteRoot).href;
+        link.textContent = label;
+        nav.appendChild(link);
+      });
+      if (cta) {
+        cta.textContent = '预约初步咨询';
+        nav.appendChild(cta);
+      }
+      nav.setAttribute('aria-label', '主导航');
+    }
+
     let counterpart;
     if (pagePath.includes('/zh/privacy-policy.html')) counterpart = new URL('privacy-policy.html', siteRoot);
     else if (pagePath.endsWith('/privacy-policy.html')) counterpart = new URL('zh/privacy-policy.html', siteRoot);
@@ -99,7 +122,9 @@
     else if (pagePath.endsWith('/hippa.html')) counterpart = new URL('zh/hippa.html', siteRoot);
     else if (pagePath.includes('/zh/resources/')) counterpart = new URL('resources/', siteRoot);
     else if (/\/resources\/?$/.test(pagePath)) counterpart = new URL('zh/resources/', siteRoot);
-    else if (/-cn\.html$/.test(pagePath)) counterpart = new URL('psychotherapy.html', siteRoot);
+    else if (pagePath.endsWith('/insurance-cn.html')) counterpart = new URL('insurance-and-fees.html', siteRoot);
+    else if (pagePath.endsWith('/insurance-and-fees.html')) counterpart = new URL('insurance-cn.html', siteRoot);
+    else if (pagePath.endsWith('/psychotherapy-cn.html')) counterpart = new URL('psychotherapy.html', siteRoot);
     else counterpart = new URL('psychotherapy-cn.html', siteRoot);
 
     const switcher = document.createElement('a');
