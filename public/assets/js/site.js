@@ -78,8 +78,42 @@
     window.addEventListener('orientationchange', () => closeMenu());
   };
 
+  const initLanguageSwitcher = () => {
+    if (document.querySelector('.language-float')) return;
+
+    const pagePath = location.pathname.replace(/\/index\.html$/i, '/').toLowerCase();
+    const isChinese = document.documentElement.lang?.toLowerCase().startsWith('zh') ||
+      /(?:^|\/)zh(?:\/|$)/.test(pagePath) ||
+      /-cn\.html$/.test(pagePath);
+
+    const stylesheet = [...document.querySelectorAll('link[rel="stylesheet"][href]')]
+      .find(link => /assets\/css\/styles\.css(?:[?#].*)?$/i.test(link.href));
+    const siteRoot = stylesheet
+      ? new URL(stylesheet.href.replace(/assets\/css\/styles\.css(?:[?#].*)?$/i, ''))
+      : new URL('./', location.href);
+
+    let counterpart;
+    if (pagePath.includes('/zh/resources/')) counterpart = new URL('resources/', siteRoot);
+    else if (/\/resources\/?$/.test(pagePath)) counterpart = new URL('zh/resources/', siteRoot);
+    else if (/-cn\.html$/.test(pagePath)) counterpart = new URL('psychotherapy.html', siteRoot);
+    else counterpart = new URL('psychotherapy-cn.html', siteRoot);
+
+    const switcher = document.createElement('a');
+    switcher.className = 'language-float';
+    switcher.href = counterpart.href;
+    switcher.lang = isChinese ? 'en' : 'zh-CN';
+    switcher.hreflang = isChinese ? 'en' : 'zh-CN';
+    switcher.setAttribute('aria-label', isChinese ? 'View this site in English' : '查看中文网站');
+    switcher.title = isChinese ? 'English' : '中文';
+    switcher.innerHTML = isChinese
+      ? '<span aria-hidden="true">EN</span><strong>English</strong>'
+      : '<span aria-hidden="true">文</span><strong>中文</strong>';
+    document.body.appendChild(switcher);
+  };
+
   const initPage = () => {
     initNavigation();
+    initLanguageSwitcher();
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const header = document.querySelector('.site-header');
